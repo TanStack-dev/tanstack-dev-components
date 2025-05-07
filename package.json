@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "tanstack dev",
   "scripts": {
-    "test": "pnpm run -r test",
+    "test": "pnpm run --filter @tanstack-dev/components test",
     "dev": "pnpm run --parallel --filter @tanstack-dev/components --filter example dev"
   },
   "author": "zongyanqi@gmail.com",

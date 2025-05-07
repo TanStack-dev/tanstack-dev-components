@@ -1,5 +1,6 @@
 import { MdOutlineTranslate } from 'react-icons/md';
 import { ComponentProps, useState, useRef, useEffect } from 'react';
+import { useLocation } from '@tanstack/react-router';
 import {
   defaultLanguageOptions,
   getLanguageUrl,
@@ -16,13 +17,36 @@ interface I18nToggleProps extends ComponentProps<'button'> {
 
 const I18nToggle = ({
   className,
-  href,
+  href: hrefProp,
   languageOptions = defaultLanguageOptions,
-  currentLanguage,
+  currentLanguage: currentLanguageProp,
   ...props
 }: I18nToggleProps) => {
+  const routerLocation = useLocation({
+    select: (location) => {
+      return location.href;
+    },
+  });
+
+  const href = hrefProp || routerLocation;
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [detectedLanguage, setDetectedLanguage] = useState<LanguageCode | null>(
+    null
+  );
+
+  // Detect language from html.meta when currentLanguage is not provided
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      const htmlLang = document.documentElement.lang as LanguageCode;
+      if (htmlLang) {
+        setDetectedLanguage(htmlLang);
+      }
+    }
+  }, []);
+
+  // Use currentLanguageProp if provided, otherwise use the detected language
+  const currentLanguage = currentLanguageProp || detectedLanguage;
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -44,7 +68,7 @@ const I18nToggle = ({
   return (
     <div className="relative" ref={dropdownRef}>
       <button
-        className={`${className || ''} flex items-center`}
+        className={`${className || 'opacity-70 hover:opacity-100'} flex items-center`}
         aria-label="Change language"
         onClick={() => setIsOpen(!isOpen)}
         type="button"
@@ -58,7 +82,9 @@ const I18nToggle = ({
       >
         <div className="" role="menu" aria-orientation="vertical">
           {languageOptions.map((option) => {
-            const isActive = option.langCode === currentLanguage;
+            const isActive = currentLanguage
+              ? option.langCode === currentLanguage
+              : false;
             return (
               <a
                 key={option.domain}

@@ -90,11 +90,6 @@ export const Route = createRootRoute({
 function RootDocument() {
   const detailsRef = React.useRef<HTMLElement>(null!);
   const linkClasses = `flex items-center justify-between group px-2 py-1 rounded-lg hover:bg-gray-500 hover:bg-opacity-10 font-black`;
-
-  const href = useLocation({
-    select: (location) => location.href,
-  });
-
   const items = (
     <>
       {libraries.map((library, i) => {
@@ -299,11 +294,7 @@ function RootDocument() {
         >
           <FaInstagram className="text-xl" />
         </a>
-        <I18nToggle
-          className="opacity-70 hover:opacity-100"
-          href={href}
-          currentLanguage="en"
-        />
+        <I18nToggle />
       </div>
       <div className="ml-auto">
         <ThemeToggle />
