@@ -18,16 +18,24 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'TanstackDevComponents',
       fileName: 'index',
+      formats: ['es'],
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      external: ['react', 'react-dom', 'react/jsx-runtime', 'react-icons'],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
           'react/jsx-runtime': 'jsxRuntime',
+          'react-icons': 'ReactIcons',
         },
       },
     },
+    // Ensure the bundle doesn't include React
+    commonjsOptions: {
+      esmExternals: ['react', 'react-dom'],
+    },
+    sourcemap: true,
+    minify: false,
   },
 });

@@ -90,12 +90,6 @@ importers:
 
   packages/ui:
     dependencies:
-      react:
-        specifier: ^19.0.0
-        version: 19.1.0
-      react-dom:
-        specifier: ^19.0.0
-        version: 19.1.0(react@19.1.0)
       react-icons:
         specifier: ^5.3.0
         version: 5.5.0(react@19.1.0)
@@ -139,6 +133,12 @@ importers:
       eslint-plugin-react-refresh:
         specifier: ^0.4.6
         version: 0.4.6(eslint@8.57.0)
+      react:
+        specifier: ^19.0.0
+        version: 19.1.0
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.1.0(react@19.1.0)
       semantic-release:
         specifier: ^24.2.3
         version: 24.2.3(typescript@5.4.5)
