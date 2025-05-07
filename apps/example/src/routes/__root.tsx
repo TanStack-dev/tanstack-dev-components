@@ -3,6 +3,7 @@ import {
   Outlet,
   Scripts,
   createRootRoute,
+  useLocation,
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import React from 'react';
@@ -19,13 +20,14 @@ import logoColor100w from '~/images/logo-color-100w.png';
 
 import { TbBrandBluesky, TbBrandTwitter } from 'react-icons/tb';
 import { SearchButton } from '~/components/SearchButton';
-import { I18nToggle } from '@tanstack-dev/components';
+import { I18nToggle, getI18nLinks } from '@tanstack-dev/components';
 import { BiSolidCheckShield } from 'react-icons/bi';
 import { MdSupport, MdLibraryBooks, MdLineAxis } from 'react-icons/md';
 import { ThemeToggle } from '~/components/ThemeToggle';
 
 export const Route = createRootRoute({
-  head: () => ({
+  loader: ({ location }) => ({ href: location.href }),
+  head: (ctx) => ({
     meta: [
       {
         charSet: 'utf-8',
@@ -42,6 +44,7 @@ export const Route = createRootRoute({
     ],
     links: [
       { rel: 'stylesheet', href: appCss },
+
       {
         rel: 'stylesheet',
         href: carbonStyles,
@@ -66,11 +69,18 @@ export const Route = createRootRoute({
       { rel: 'manifest', href: '/site.webmanifest', color: '#fffff' },
       { rel: 'icon', href: '/favicon.ico' },
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: '' },
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossOrigin: '',
+      },
       {
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
       },
+      ...getI18nLinks({
+        href: ctx.loaderData.href,
+      }),
     ],
     scripts: [],
   }),
@@ -80,6 +90,10 @@ export const Route = createRootRoute({
 function RootDocument() {
   const detailsRef = React.useRef<HTMLElement>(null!);
   const linkClasses = `flex items-center justify-between group px-2 py-1 rounded-lg hover:bg-gray-500 hover:bg-opacity-10 font-black`;
+
+  const href = useLocation({
+    select: (location) => location.href,
+  });
 
   const items = (
     <>
@@ -285,7 +299,11 @@ function RootDocument() {
         >
           <FaInstagram className="text-xl" />
         </a>
-        <I18nToggle className="opacity-70 hover:opacity-100" />
+        <I18nToggle
+          className="opacity-70 hover:opacity-100"
+          href={href}
+          currentLanguage="en"
+        />
       </div>
       <div className="ml-auto">
         <ThemeToggle />
