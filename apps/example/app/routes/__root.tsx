@@ -78,9 +78,9 @@ export const Route = createRootRoute({
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
       },
-      ...getI18nLinks({
-        href: ctx.loaderData.href,
-      }),
+      // ...getI18nLinks({
+      //   href: ctx.loaderData.href,
+      // }),
     ],
     scripts: [],
   }),
@@ -283,7 +283,7 @@ function RootDocument() {
           <TbBrandTwitter className="text-xl" />
         </a>
         <a
-          href="https://bsky.app/profile/tanstack.com"
+          href="https://bsky.~/profile/tanstack.com"
           className="opacity-70 hover:opacity-100"
         >
           <TbBrandBluesky className="text-xl" />
