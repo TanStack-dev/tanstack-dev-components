@@ -43,7 +43,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --filter @tanstack-dev/components...
+        run: pnpm install
 
       - name: Run tests
         run: pnpm run --filter @tanstack-dev/components test
@@ -65,13 +65,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9
           run_install: false
 
       - name: Get pnpm store directory
@@ -88,7 +88,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --filter @tanstack-dev/components...
+        run: pnpm install
 
       - name: Build package
         run: cd packages/ui && pnpm run build
