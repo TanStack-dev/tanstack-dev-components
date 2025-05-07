@@ -1,6 +1,5 @@
 import { MdOutlineTranslate } from 'react-icons/md';
 import { ComponentProps, useState, useRef, useEffect } from 'react';
-import { useLocation } from '@tanstack/react-router';
 import {
   defaultLanguageOptions,
   getLanguageUrl,
@@ -22,13 +21,7 @@ const I18nToggle = ({
   currentLanguage: currentLanguageProp,
   ...props
 }: I18nToggleProps) => {
-  const routerLocation = useLocation({
-    select: (location) => {
-      return location.href;
-    },
-  });
-
-  const href = hrefProp || routerLocation;
+  const href = hrefProp;
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [detectedLanguage, setDetectedLanguage] = useState<LanguageCode | null>(
@@ -78,7 +71,7 @@ const I18nToggle = ({
       </button>
 
       <div
-        className={`absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black dark:ring-gray-700 ring-opacity-5 dark:ring-opacity-50 z-10 overflow-hidden ${isOpen ? '' : 'hidden'}`}
+        className={`absolute left-0 mt-2 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black dark:ring-gray-700 ring-opacity-5 dark:ring-opacity-50 z-10 overflow-hidden ${isOpen ? '' : 'hidden'}`}
       >
         <div className="" role="menu" aria-orientation="vertical">
           {languageOptions.map((option) => {

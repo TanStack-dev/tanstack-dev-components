@@ -78,9 +78,9 @@ export const Route = createRootRoute({
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
       },
-      // ...getI18nLinks({
-      //   href: ctx.loaderData.href,
-      // }),
+      ...getI18nLinks({
+        href: ctx.loaderData.href,
+      }),
     ],
     scripts: [],
   }),
@@ -264,6 +264,9 @@ function RootDocument() {
       })}
     </>
   );
+  const href = useLocation({
+    select: (location) => location.href,
+  });
 
   const logo = (
     <div className="flex-1 flex items-center gap-4 justify-between">
@@ -294,7 +297,7 @@ function RootDocument() {
         >
           <FaInstagram className="text-xl" />
         </a>
-        <I18nToggle />
+        <I18nToggle href={href} />
       </div>
       <div className="ml-auto">
         <ThemeToggle />

@@ -9,11 +9,6 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { I18nToggle } from '../index';
 import { LanguageOption } from '../utils/i18n';
 
-// Mock the TanStack Router's useLocation hook
-vi.mock('@tanstack/react-router', () => ({
-  useLocation: () => 'https://tanstack.com/mocked-path',
-}));
-
 describe('I18nToggle Component', () => {
   // Helper functions
   const openDropdown = (container: HTMLElement) => {
