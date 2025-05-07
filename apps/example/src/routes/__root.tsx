@@ -6,18 +6,23 @@ import {
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import React from 'react';
+import { libraries } from '~/libraries';
 
 import appCss from '~/styles/app.css?url';
 import carbonStyles from '~/styles/carbon.css?url';
 
 import { Link } from '@tanstack/react-router';
-import { CgClose, CgMenuLeft } from 'react-icons/cg';
-import { FaInstagram } from 'react-icons/fa';
+import { CgClose, CgMenuLeft, CgMusicSpeaker } from 'react-icons/cg';
+import { FaDiscord, FaGithub, FaInstagram, FaTshirt } from 'react-icons/fa';
 import { twMerge } from 'tailwind-merge';
 import logoColor100w from '~/images/logo-color-100w.png';
 
 import { TbBrandBluesky, TbBrandTwitter } from 'react-icons/tb';
 import { SearchButton } from '~/components/SearchButton';
+import { I18nToggle } from '@tanstack-dev/components';
+import { BiSolidCheckShield } from 'react-icons/bi';
+import { MdSupport, MdLibraryBooks, MdLineAxis } from 'react-icons/md';
+import { ThemeToggle } from '~/components/ThemeToggle';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -69,20 +74,187 @@ export const Route = createRootRoute({
     ],
     scripts: [],
   }),
-  component: RootComponent,
+  component: RootDocument,
 });
 
-function RootComponent() {
-  return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
-  );
-}
-
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument() {
   const detailsRef = React.useRef<HTMLElement>(null!);
   const linkClasses = `flex items-center justify-between group px-2 py-1 rounded-lg hover:bg-gray-500 hover:bg-opacity-10 font-black`;
+
+  const items = (
+    <>
+      {libraries.map((library, i) => {
+        const [prefix, name] = library.name.split(' ');
+
+        return (
+          <div key={i}>
+            {library.to.startsWith('http') ? (
+              <a href={library.to} className={linkClasses}>
+                <span>
+                  <span className="font-light dark:font-bold dark:opacity-40">
+                    {prefix}
+                  </span>{' '}
+                  <span className={library.textStyle}>{name}</span>
+                </span>
+              </a>
+            ) : (
+              <div>
+                <Link
+                  to={library.to}
+                  onClick={() => {
+                    detailsRef.current.removeAttribute('open');
+                  }}
+                >
+                  {(props) => {
+                    return (
+                      <div
+                        className={twMerge(
+                          linkClasses,
+                          props.isActive
+                            ? 'bg-gray-500/10 dark:bg-gray-500/30'
+                            : ''
+                        )}
+                      >
+                        <span
+                          style={{
+                            viewTransitionName: `library-name-${library.id}`,
+                          }}
+                        >
+                          <span
+                            className={twMerge(
+                              'font-light dark:font-bold dark:opacity-40',
+                              props.isActive ? `font-bold dark:opacity-100` : ''
+                            )}
+                          >
+                            {prefix}
+                          </span>{' '}
+                          <span
+                            className={twMerge(
+                              library.textStyle
+                              // isPending &&
+                              //   `[view-transition-name:library-name]`
+                            )}
+                          >
+                            {name}
+                          </span>
+                        </span>
+                        {library.badge ? (
+                          <span
+                            className={twMerge(
+                              `px-2 py-px uppercase font-black bg-gray-500/10 dark:bg-gray-500/20 rounded-full text-[.7rem] group-hover:opacity-100 transition-opacity text-white animate-pulse`,
+                              // library.badge === 'new'
+                              //   ? 'text-green-500'
+                              //   : library.badge === 'soon'
+                              //   ? 'text-cyan-500'
+                              //   : '',
+                              library.textStyle
+                            )}
+                          >
+                            {library.badge}
+                          </span>
+                        ) : null}
+                      </div>
+                    );
+                  }}
+                </Link>
+                <div className={'block'}>
+                  {library.menu?.map((item, i) => {
+                    return (
+                      <Link
+                        to={item.to}
+                        key={i}
+                        className={twMerge(
+                          'flex gap-2 items-center px-2 ml-2 my-1 py-0.5',
+                          'rounded-lg hover:bg-gray-500/10 dark:hover:bg-gray-500/30'
+                        )}
+                      >
+                        {item.icon}
+                        {item.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+      <div className="py-2">
+        <div className="bg-gray-500/10 h-px" />
+      </div>
+      {[
+        {
+          label: 'Support',
+          icon: <MdSupport />,
+          to: '/support',
+        },
+        {
+          label: 'Learn',
+          icon: <MdLibraryBooks />,
+          to: '/learn',
+        },
+        {
+          label: (
+            <span className="flex items-center gap-2">
+              Stats
+              <span className="text-xs bg-transparent text-transparent bg-clip-text bg-gradient-to-r border border-cyan-600 from-blue-500 to-cyan-500 font-bold px-1 rounded">
+                BETA
+              </span>
+            </span>
+          ),
+          icon: <MdLineAxis />,
+          to: '/stats/npm',
+        },
+        {
+          label: 'Discord',
+          icon: <FaDiscord />,
+          to: 'https://tlinz.com/discord',
+          target: '_blank',
+        },
+        {
+          label: 'Merch',
+          icon: <FaTshirt />,
+          to: 'https://cottonbureau.com/people/tanstack',
+        },
+        {
+          label: 'Blog',
+          icon: <CgMusicSpeaker />,
+          to: '/blog',
+        },
+        {
+          label: 'GitHub',
+          icon: <FaGithub />,
+          to: 'https://github.com/tanstack',
+        },
+        {
+          label: 'Ethos',
+          icon: <BiSolidCheckShield />,
+          to: '/ethos',
+        },
+      ].map((item, i) => {
+        return (
+          <Link
+            to={item.to}
+            key={i}
+            className={twMerge(linkClasses, 'font-normal')}
+            activeProps={{
+              className: twMerge(
+                '!font-bold bg-gray-500/10 dark:bg-gray-500/30'
+              ),
+            }}
+            target={item.to.startsWith('http') ? '_blank' : undefined}
+          >
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4 justify-between">
+                {item.icon}
+              </div>
+              <div>{item.label}</div>
+            </div>
+          </Link>
+        );
+      })}
+    </>
+  );
 
   const logo = (
     <div className="flex-1 flex items-center gap-4 justify-between">
@@ -113,8 +285,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         >
           <FaInstagram className="text-xl" />
         </a>
+        <I18nToggle className="opacity-70 hover:opacity-100" />
       </div>
-      <div className="ml-auto"></div>
+      <div className="ml-auto">
+        <ThemeToggle />
+      </div>
     </div>
   );
 
@@ -137,9 +312,15 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           border-t border-gray-500 border-opacity-20 text-lg bg-white/80 dark:bg-black/20"
         >
           <div className="p-2 pb-0">
-            <SearchButton />
+            <div className="flex gap-2 items-center">
+              <div className="flex-1">
+                <SearchButton />
+              </div>
+            </div>
           </div>
-          <div className="space-y-px text-sm p-2 border-b border-gray-500/10 dark:border-gray-500/20"></div>
+          <div className="space-y-px text-sm p-2 border-b border-gray-500/10 dark:border-gray-500/20">
+            {items}
+          </div>
         </div>
       </details>
     </div>
@@ -152,10 +333,16 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           {logo}
         </div>
         <div className="p-2">
-          <SearchButton />
+          <div className="flex gap-2 items-center">
+            <div className="flex-1">
+              <SearchButton />
+            </div>
+          </div>
         </div>
         <div className="flex-1 flex flex-col gap-4 whitespace-nowrap overflow-y-auto text-base pb-[50px]">
-          <div className="space-y-1 text-sm p-2 border-b border-gray-500/10 dark:border-gray-500/20"></div>
+          <div className="space-y-1 text-sm p-2 border-b border-gray-500/10 dark:border-gray-500/20">
+            {items}
+          </div>
         </div>
       </div>
     </>
@@ -178,7 +365,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         </div>
 
         <TanStackRouterDevtools position="bottom-right" />
-
         <Scripts />
       </body>
     </html>
