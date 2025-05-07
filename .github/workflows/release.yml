@@ -102,13 +102,9 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
-      - name: Verify npm authentication
-        run: npm whoami || echo "Token authentication failed - might be due to CI environment"
-        continue-on-error: true
-
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: cd packages/ui && npx semantic-release --debug
+        run: cd packages/ui && npx semantic-release
