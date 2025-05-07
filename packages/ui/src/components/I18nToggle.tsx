@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { MdOutlineTranslate } from 'react-icons/md';
 import { ComponentProps } from 'react';
 

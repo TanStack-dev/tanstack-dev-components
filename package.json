@@ -1,7 +1,7 @@
 {
-  "name": "monorepo",
+  "name": "tanstack-dev-components",
   "version": "1.0.0",
-  "description": "monorepo example",
+  "description": "tanstack dev",
   "scripts": {
     "test": "pnpm run -r test",
     "dev": "pnpm run --filter example dev"
