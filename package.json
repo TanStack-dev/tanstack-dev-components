@@ -4,7 +4,7 @@
   "description": "tanstack dev",
   "scripts": {
     "test": "pnpm run -r test",
-    "dev": "pnpm run --filter example dev"
+    "dev": "pnpm run --parallel --filter @tanstack-dev/components --filter example dev"
   },
   "author": "zongyanqi@gmail.com",
   "license": "ISC",
