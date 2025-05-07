@@ -8,6 +8,9 @@ on:
       - 'packages/ui/**'
   workflow_dispatch: # Allow manual triggering
 
+permissions:
+  contents: read
+
 jobs:
   test:
     name: Test
